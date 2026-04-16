@@ -35,28 +35,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     if (req.method === "DELETE") {
-      // Check if product has any linked history before deciding how to delete
-      const [purchaseCount, invoiceCount, logCount] = await prisma.$transaction([
-        prisma.purchaseItem.count({ where: { productId: id } }),
-        prisma.invoiceItem.count({ where: { productId: id } }),
-        prisma.inventoryLog.count({ where: { productId: id } }),
-      ]);
-
-      const hasHistory = purchaseCount > 0 || invoiceCount > 0 || logCount > 0;
-
-      if (hasHistory) {
-        // Soft delete — preserve history integrity
-        await prisma.product.update({ where: { id }, data: { isActive: false } });
-        return res.status(200).json({
-          deleted: false,
-          deactivated: true,
-          message: "Product has transaction history and was deactivated instead of permanently deleted.",
-        });
-      }
-
-      // No history — safe to hard delete
-      await prisma.product.delete({ where: { id } });
-      return res.status(200).json({ deleted: true, deactivated: false });
+      await prisma.product.update({ where: { id }, data: { isActive: false } });
+      return res.status(204).end();
     }
 
     return res.status(405).end();
