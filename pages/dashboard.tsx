@@ -15,8 +15,8 @@ export default function Dashboard({ stats, monthlyChart, lowStockItems }: any) {
   };
 
   return (
-    <div className="p-8 bg-gray-50 min-h-screen">
-      <h1 className="text-3xl font-bold mb-2">Dashboard</h1>
+    <div className="p-4 md:p-8 bg-gray-50 min-h-screen">
+      <h1 className="text-xl md:text-3xl font-bold mb-2">Dashboard</h1>
       <p className="text-gray-500 mb-8">Welcome back — here's your business overview</p>
 
       {/* Primary Stats */}

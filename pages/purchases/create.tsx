@@ -58,8 +58,8 @@ export default function CreatePurchase() {
   };
 
   return (
-    <div className="p-8 bg-gray-50 min-h-screen">
-      <h1 className="text-3xl font-bold mb-6">New Purchase Order</h1>
+    <div className="p-4 md:p-8 bg-gray-50 min-h-screen">
+      <h1 className="text-xl md:text-3xl font-bold mb-6">New Purchase Order</h1>
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Header */}
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">

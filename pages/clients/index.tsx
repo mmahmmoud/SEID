@@ -78,9 +78,9 @@ export default function ClientsPage() {
   );
 
   return (
-    <div className="p-8 min-h-screen bg-gray-50">
+    <div className="p-4 md:p-8 min-h-screen bg-gray-50">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Clients</h1>
+        <h1 className="text-xl md:text-3xl font-bold">Clients</h1>
         <div className="flex gap-3">
           <input
             type="text" placeholder="Search..."

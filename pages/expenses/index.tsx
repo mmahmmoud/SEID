@@ -46,10 +46,10 @@ export default function ExpensesPage() {
   const totalAmount = expenses.reduce((s, e) => s + e.amount, 0);
 
   return (
-    <div className="p-8 bg-gray-50 min-h-screen">
+    <div className="p-4 md:p-8 bg-gray-50 min-h-screen">
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-3xl font-bold">Expenses</h1>
+          <h1 className="text-xl md:text-3xl font-bold">Expenses</h1>
           <p className="text-gray-500 mt-1">{total} records · Total: {totalAmount.toFixed(2)} AED</p>
         </div>
         <Link

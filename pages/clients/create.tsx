@@ -28,10 +28,10 @@ export default function CreateClient() {
   };
 
   return (
-    <div className="p-8 bg-gray-50 min-h-screen">
+    <div className="p-4 md:p-8 bg-gray-50 min-h-screen">
       <div className="flex items-center gap-3 mb-6">
         <Link href="/clients" className="text-gray-500 hover:text-gray-700">← Back</Link>
-        <h1 className="text-3xl font-bold">Create Client</h1>
+        <h1 className="text-xl md:text-3xl font-bold">Create Client</h1>
       </div>
       <form onSubmit={handleSubmit} className="space-y-3 max-w-md bg-white p-6 rounded-xl shadow-sm border border-gray-100">
         <input type="text" placeholder="Name *" value={name} onChange={e => setName(e.target.value)} className="border p-2 w-full rounded" required />

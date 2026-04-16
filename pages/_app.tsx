@@ -6,12 +6,7 @@ import Sidebar from "../components/Sidebar";
 import "../styles/globals.css";
 
 const NO_SIDEBAR_ROUTES = ["/login", "/"];
-
-// Pages a salesperson is allowed to access
-const SALES_ALLOWED = [
-  "/attendance",
-  "/attendance/my-history",
-];
+const SALES_ALLOWED = ["/attendance", "/attendance/my-history"];
 
 function RouteGuard({ children }: { children: React.ReactNode }) {
   const { data: session, status } = useSession();
@@ -20,15 +15,12 @@ function RouteGuard({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (status === "loading") return;
-    if (!session) return; // let NextAuth handle unauthenticated redirect
-
+    if (!session) return;
     if (role === "salesperson") {
       const allowed = SALES_ALLOWED.some(
         (path) => router.pathname === path || router.pathname.startsWith(path + "/")
       );
-      if (!allowed) {
-        router.replace("/attendance");
-      }
+      if (!allowed) router.replace("/attendance");
     }
   }, [status, role, router.pathname]);
 
@@ -42,9 +34,9 @@ export default function MyApp({ Component, pageProps: { session, ...pageProps } 
   return (
     <SessionProvider session={session}>
       <RouteGuard>
-        <div className="flex">
+        <div className="flex min-h-screen bg-gray-50">
           {showSidebar && <Sidebar />}
-          <main className={`flex-1 min-h-screen ${showSidebar ? "" : "w-full"}`}>
+          <main className={`flex-1 min-w-0 ${showSidebar ? "pt-14 lg:pt-0" : ""}`}>
             <Component {...pageProps} />
           </main>
         </div>

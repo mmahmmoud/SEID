@@ -50,10 +50,10 @@ export default function AccountsPage() {
   };
 
   return (
-    <div className="p-8 bg-gray-50 min-h-screen">
+    <div className="p-4 md:p-8 bg-gray-50 min-h-screen">
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-3xl font-bold">Bank Accounts</h1>
+          <h1 className="text-xl md:text-3xl font-bold">Bank Accounts</h1>
           <p className="text-gray-500 mt-1">{accounts.length} active accounts</p>
         </div>
         <button onClick={openAdd} className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-xl hover:bg-blue-700 text-sm font-medium">

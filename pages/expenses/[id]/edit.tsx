@@ -50,11 +50,11 @@ export default function EditExpense() {
     router.push("/expenses");
   };
 
-  if (loading) return <div className="p-8 text-gray-400">Loading...</div>;
+  if (loading) return <div className="p-4 md:p-8 text-gray-400">Loading...</div>;
 
   return (
-    <div className="p-8 bg-gray-50 min-h-screen">
-      <h1 className="text-3xl font-bold mb-6">Edit Expense</h1>
+    <div className="p-4 md:p-8 bg-gray-50 min-h-screen">
+      <h1 className="text-xl md:text-3xl font-bold mb-6">Edit Expense</h1>
       <form onSubmit={handleSubmit}>
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 space-y-5 max-w-2xl">
           <div>

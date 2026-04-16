@@ -20,7 +20,7 @@ export default function InvoicePage({ invoice }: any) {
   };
 
   return (
-    <div className="p-8 bg-gray-50 min-h-screen">
+    <div className="p-4 md:p-8 bg-gray-50 min-h-screen">
       {/* Buttons */}
       <div className="flex gap-2 mb-6">
         <button

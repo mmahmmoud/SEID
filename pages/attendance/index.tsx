@@ -181,7 +181,7 @@ export default function AttendancePage() {
   const dateStr = now.toLocaleDateString("en-AE", { weekday: "long", year: "numeric", month: "long", day: "numeric" });
 
   if (loading) return (
-    <div className="p-8 flex items-center justify-center min-h-screen">
+    <div className="p-4 md:p-8 flex items-center justify-center min-h-screen">
       <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500" />
     </div>
   );

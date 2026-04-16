@@ -25,10 +25,10 @@ export default function BankingDashboard() {
   const totalBalance = accounts.reduce((s, a) => s + a.currentBalance, 0);
 
   return (
-    <div className="p-8 bg-gray-50 min-h-screen">
+    <div className="p-4 md:p-8 bg-gray-50 min-h-screen">
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-3xl font-bold">Banking</h1>
+          <h1 className="text-xl md:text-3xl font-bold">Banking</h1>
           <p className="text-gray-500 mt-1">{accounts.length} account{accounts.length !== 1 ? "s" : ""} · Total: {fmt(totalBalance)}</p>
         </div>
         <div className="flex gap-3">

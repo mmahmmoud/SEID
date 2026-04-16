@@ -124,14 +124,14 @@ export default function EditInvoice({ invoice }: any) {
   };
 
   return (
-    <div className="p-8 bg-gray-50 min-h-screen">
+    <div className="p-4 md:p-8 bg-gray-50 min-h-screen">
       {/* Header */}
       <div className="flex items-center gap-3 mb-7">
         <button onClick={() => router.back()} className="text-gray-400 hover:text-gray-600">
           <FiArrowLeft size={20} />
         </button>
         <div>
-          <h1 className="text-3xl font-bold">Edit Invoice</h1>
+          <h1 className="text-xl md:text-3xl font-bold">Edit Invoice</h1>
           <p className="text-gray-400 text-sm font-mono mt-0.5">#{invoice.id.slice(0,8).toUpperCase()}</p>
         </div>
         <div className="ml-auto flex gap-3">

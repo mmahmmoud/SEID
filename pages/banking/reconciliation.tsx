@@ -103,10 +103,10 @@ export default function ReconciliationPage() {
   };
 
   return (
-    <div className="p-8 bg-gray-50 min-h-screen">
+    <div className="p-4 md:p-8 bg-gray-50 min-h-screen">
       <div className="flex justify-between items-center mb-6">
         <div>
-          <h1 className="text-3xl font-bold">Reconciliation</h1>
+          <h1 className="text-xl md:text-3xl font-bold">Reconciliation</h1>
           <p className="text-gray-500 mt-1">{unmatchedTxs.length} transactions need attention</p>
         </div>
         <select value={accFilter} onChange={(e) => setAccFilter(e.target.value)}

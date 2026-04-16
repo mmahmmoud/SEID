@@ -93,10 +93,10 @@ export default function UsersPage() {
   if ((session?.user as any)?.role !== "admin") return null;
 
   return (
-    <div className="p-8 bg-gray-50 min-h-screen">
+    <div className="p-4 md:p-8 bg-gray-50 min-h-screen">
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-3xl font-bold">User Management</h1>
+          <h1 className="text-xl md:text-3xl font-bold">User Management</h1>
           <p className="text-gray-500 mt-1">Manage team members and their access roles</p>
         </div>
         <button

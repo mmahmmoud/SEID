@@ -9,7 +9,7 @@ function fmt(n: number, cur = "AED") {
 }
 
 export default function BankReport({ account, report }: { account: any; report: any }) {
-  if (!account) return <div className="p-8 text-gray-400">Account not found.</div>;
+  if (!account) return <div className="p-4 md:p-8 text-gray-400">Account not found.</div>;
 
   const pieData = [
     { name: "Matched", value: report.statusCount.matched, color: "#22c55e" },
@@ -18,12 +18,12 @@ export default function BankReport({ account, report }: { account: any; report: 
   ].filter((d) => d.value > 0);
 
   return (
-    <div className="p-8 bg-gray-50 min-h-screen">
+    <div className="p-4 md:p-8 bg-gray-50 min-h-screen">
       {/* Header */}
       <div className="flex items-center gap-4 mb-8">
         <Link href="/banking" className="text-gray-400 hover:text-gray-600"><FiArrowLeft size={20} /></Link>
         <div>
-          <h1 className="text-3xl font-bold">{account.name}</h1>
+          <h1 className="text-xl md:text-3xl font-bold">{account.name}</h1>
           <p className="text-gray-500">{account.bankName} · ••••{account.accountNumber.slice(-4)} · {account.currency}</p>
         </div>
         <div className="ml-auto flex gap-3">

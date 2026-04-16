@@ -32,8 +32,8 @@ export default function CreateExpense() {
   };
 
   return (
-    <div className="p-8 bg-gray-50 min-h-screen">
-      <h1 className="text-3xl font-bold mb-6">New Expense</h1>
+    <div className="p-4 md:p-8 bg-gray-50 min-h-screen">
+      <h1 className="text-xl md:text-3xl font-bold mb-6">New Expense</h1>
       <form onSubmit={handleSubmit}>
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 space-y-5 max-w-2xl">
           <div>

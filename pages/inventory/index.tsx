@@ -25,11 +25,11 @@ export default function InventoryPage() {
   }, []);
 
   return (
-    <div className="p-8 bg-gray-50 min-h-screen">
+    <div className="p-4 md:p-8 bg-gray-50 min-h-screen">
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-3xl font-bold">Inventory</h1>
-          <p className="text-gray-500 mt-1">Stock movements & alerts</p>
+          <h1 className="text-xl md:text-3xl font-bold">Inventory</h1>
+          <p className="text-gray-500 mt-1">Stock movements &amp; alerts</p>
         </div>
         {lowStock.length > 0 && (
           <div className="flex items-center gap-2 bg-red-50 border border-red-200 text-red-700 px-4 py-2 rounded-xl text-sm">

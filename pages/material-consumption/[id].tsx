@@ -31,7 +31,7 @@ export default function MaterialConsumptionDetail() {
     id ? (clients.find((c) => c.id === id)?.name || id) : null;
 
   if (loading) {
-    return <div className="p-8 text-gray-400">Loading...</div>;
+    return <div className="p-4 md:p-8 text-gray-400">Loading...</div>;
   }
   if (!record || record.message) {
     return (
@@ -46,14 +46,14 @@ export default function MaterialConsumptionDetail() {
   const totalUnits = record.items.reduce((s: number, i: any) => s + i.quantity, 0);
 
   return (
-    <div className="p-8 bg-gray-50 min-h-screen">
+    <div className="p-4 md:p-8 bg-gray-50 min-h-screen">
       {/* Header */}
       <div className="flex items-center gap-4 mb-8">
         <Link href="/material-consumption" className="text-gray-400 hover:text-gray-700 transition">
           <FiArrowLeft size={20} />
         </Link>
         <div>
-          <h1 className="text-3xl font-bold">Consumption Detail</h1>
+          <h1 className="text-xl md:text-3xl font-bold">Consumption Detail</h1>
           <p className="text-gray-400 text-xs font-mono mt-0.5">{record.id}</p>
         </div>
       </div>

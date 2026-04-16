@@ -115,10 +115,10 @@ export default function CreateQuotation() {
   };
 
   return (
-    <div className="p-8 bg-gray-50 min-h-screen">
+    <div className="p-4 md:p-8 bg-gray-50 min-h-screen">
       <div className="flex items-center gap-3 mb-6">
         <Link href="/quotations" className="text-gray-400 hover:text-gray-600">← Back</Link>
-        <h1 className="text-3xl font-bold">Create Quotation</h1>
+        <h1 className="text-xl md:text-3xl font-bold">Create Quotation</h1>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">

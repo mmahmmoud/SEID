@@ -115,14 +115,14 @@ export default function AdminAttendancePage() {
   const absentCount  = records.filter(r => r.status === "ABSENT").length;
 
   return (
-    <div className="p-6 max-w-5xl mx-auto">
+    <div className="p-4 md:p-6 max-w-5xl mx-auto">
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
         <Link href="/attendance" className="text-gray-400 hover:text-gray-700">
           <FiArrowLeft size={20} />
         </Link>
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Attendance & Field Tracking</h1>
+          <h1 className="text-2xl font-bold text-gray-900">Attendance &amp; Field Tracking</h1>
           <p className="text-sm text-gray-400">Admin overview — all employees</p>
         </div>
         <button onClick={() => tab === "visits" ? fetchVisits() : fetchAttendance()}
@@ -190,7 +190,7 @@ export default function AdminAttendancePage() {
 
         /* ── Attendance Table ── */
         (tab === "today" || tab === "history") && (
-          <div className="bg-white border border-gray-100 rounded-2xl shadow-sm overflow-hidden">
+          <div className="bg-white border border-gray-100 rounded-2xl shadow-sm overflow-x-auto">
             <table className="w-full text-sm">
               <thead className="bg-gray-50 border-b border-gray-100">
                 <tr>

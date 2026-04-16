@@ -18,11 +18,11 @@ export default function PurchaseDetail({ purchase }: { purchase: any }) {
   };
 
   return (
-    <div className="p-8 bg-gray-50 min-h-screen">
+    <div className="p-4 md:p-8 bg-gray-50 min-h-screen">
       <div className="flex items-center gap-4 mb-8">
         <Link href="/purchases" className="text-gray-400 hover:text-gray-600"><FiArrowLeft size={20} /></Link>
         <div>
-          <h1 className="text-3xl font-bold">Purchase Order</h1>
+          <h1 className="text-xl md:text-3xl font-bold">Purchase Order</h1>
           {purchase.referenceNo && <p className="text-gray-500">Ref: {purchase.referenceNo}</p>}
         </div>
         <div className="ml-auto flex items-center gap-3">

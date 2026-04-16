@@ -139,14 +139,14 @@ export default function CreateMaterialConsumption() {
 
   if (loading) {
     return (
-      <div className="p-8 bg-gray-50 min-h-screen flex items-center justify-center">
+      <div className="p-4 md:p-8 bg-gray-50 min-h-screen flex items-center justify-center">
         <p className="text-gray-400">Loading...</p>
       </div>
     );
   }
 
   return (
-    <div className="p-8 bg-gray-50 min-h-screen">
+    <div className="p-4 md:p-8 bg-gray-50 min-h-screen">
       {/* Toast */}
       {toast && (
         <div
@@ -170,7 +170,7 @@ export default function CreateMaterialConsumption() {
           <FiArrowLeft size={20} />
         </Link>
         <div>
-          <h1 className="text-3xl font-bold">Record Material Consumption</h1>
+          <h1 className="text-xl md:text-3xl font-bold">Record Material Consumption</h1>
           <p className="text-gray-500 mt-1">Log materials used at a project site or workshop</p>
         </div>
       </div>
