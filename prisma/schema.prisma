@@ -1,0 +1,391 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String       @id @default(cuid())
+  name        String
+  email       String       @unique
+  password    String
+  role        String       @default("admin")
+  attendance  Attendance[]
+  fieldVisits FieldVisit[]
+  gpsPings    GPSPing[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+model Client {
+  id         String       @id @default(cuid())
+  name       String
+  email      String?
+  phone      String?
+  address    String?
+  licenseUrl String?
+  invoices   Invoice[]
+  quotations Quotation[]
+  fieldVisits FieldVisit[]
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+}
+
+model Invoice {
+  id           String             @id @default(cuid())
+  clientId     String
+  client       Client             @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  items        InvoiceItem[]
+  installments InvoiceInstallment[]
+  subTotal     Decimal
+  tax          Decimal
+  total        Decimal
+  deposit      Float              @default(0)
+  depositMethod String             @default("")
+  status       String             @default("UNPAID")
+  dueDate      DateTime?
+  materialCost Float              @default(0)
+  linkedPurchaseIds String        @default("")
+  woocommerceOrderId String?      @unique
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+  inventoryLogs InventoryLog[]
+
+  @@index([clientId])
+}
+
+model InvoiceInstallment {
+  id          String   @id @default(cuid())
+  invoiceId   String
+  invoice     Invoice  @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  amount      Float
+  dueDate     DateTime
+  paidAt      DateTime?
+  status      String   @default("PENDING")
+  paymentMethod String  @default("")
+  notes       String?
+  createdAt   DateTime @default(now())
+}
+
+model InvoiceItem {
+  id        String   @id @default(cuid())
+  invoiceId String
+  invoice   Invoice  @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  name      String
+  quantity  Int
+  price     Float
+  costPrice Float    @default(0)
+  tax       Float    @default(0)
+  productId String?
+  product   Product? @relation(fields: [productId], references: [id])
+}
+
+model Quotation {
+  id        String          @id @default(cuid())
+  clientId  String
+  client    Client          @relation(fields: [clientId], references: [id])
+  subTotal  Float
+  tax       Float
+  total     Float
+  status    String?         @default("DRAFT")
+  items     QuotationItem[]
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+}
+
+model QuotationItem {
+  id          String    @id @default(cuid())
+  quotationId String
+  quotation   Quotation @relation(fields: [quotationId], references: [id], onDelete: Cascade)
+  section     String    @default("General")
+  sortOrder   Int       @default(0)
+  name        String
+  price       Decimal
+  quantity    Int
+  tax         Float     @default(0)
+}
+
+model Supplier {
+  id        String     @id @default(cuid())
+  name      String
+  email     String?
+  phone     String?
+  address   String?
+  taxNumber String?
+  purchases Purchase[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model Product {
+  id            String  @id @default(cuid())
+  name          String
+  sku           String  @unique
+  description   String?
+  sellingPrice  Float
+  costPrice     Float
+  stockQuantity Float   @default(0)
+  lowStockAlert Float   @default(10)
+  unit          String  @default("pcs")
+  isActive      Boolean @default(true)
+
+  purchaseItems        PurchaseItem[]
+  invoiceItems         InvoiceItem[]
+  inventoryLogs        InventoryLog[]
+  consumptionItems     MaterialConsumptionItem[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model InventoryLog {
+  id            String   @id @default(cuid())
+  productId     String
+  product       Product  @relation(fields: [productId], references: [id])
+  type          String   // IN | OUT | ADJUSTMENT | CONSUMPTION
+  quantity      Float
+  costPrice     Float?
+  reference     String?
+  notes         String?
+  invoiceId     String?
+  invoice       Invoice?  @relation(fields: [invoiceId], references: [id])
+  purchaseId    String?
+  purchase      Purchase? @relation(fields: [purchaseId], references: [id])
+  consumptionId String?
+  consumption   MaterialConsumption? @relation(fields: [consumptionId], references: [id])
+  referenceType String?  // PROJECT | WORKSHOP
+  referenceId   String?  // client/project id when referenceType = PROJECT
+  performedBy   String?  // user name or id
+  createdAt     DateTime @default(now())
+}
+
+model MaterialConsumption {
+  id            String                    @id @default(cuid())
+  date          DateTime                  @default(now())
+  referenceType String                    // PROJECT | WORKSHOP
+  referenceId   String?                   // clientId when referenceType = PROJECT
+  notes         String?
+  createdBy     String
+  items         MaterialConsumptionItem[]
+  inventoryLogs InventoryLog[]
+  createdAt     DateTime                  @default(now())
+  updatedAt     DateTime                  @updatedAt
+}
+
+model MaterialConsumptionItem {
+  id            String              @id @default(cuid())
+  consumptionId String
+  consumption   MaterialConsumption @relation(fields: [consumptionId], references: [id], onDelete: Cascade)
+  productId     String
+  product       Product             @relation(fields: [productId], references: [id])
+  quantity      Float
+  costSnapshot  Float               // cost at time of consumption
+}
+
+model Purchase {
+  id           String         @id @default(cuid())
+  supplierId   String
+  supplier     Supplier       @relation(fields: [supplierId], references: [id])
+  items        PurchaseItem[]
+  subTotal     Float
+  tax          Float
+  deliveryFee  Float          @default(0)
+  total        Float
+  status       String         @default("PENDING")
+  notes        String?
+  referenceNo  String?
+
+  inventoryLogs InventoryLog[]
+  returns       PurchaseReturn[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([supplierId])
+}
+
+model Expense {
+  id          String   @id @default(cuid())
+  title       String
+  category    String
+  amount      Float
+  date        DateTime @default(now())
+  paymentMethod String @default("")
+  notes       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model PurchaseItem {
+  id         String   @id @default(cuid())
+  purchaseId String
+  purchase   Purchase @relation(fields: [purchaseId], references: [id], onDelete: Cascade)
+  productId  String
+  product    Product  @relation(fields: [productId], references: [id])
+  name       String
+  quantity   Float
+  costPrice  Float
+  tax        Float    @default(0)
+  total      Float
+}
+
+model PurchaseReturn {
+  id         String               @id @default(cuid())
+  purchaseId String
+  purchase   Purchase             @relation(fields: [purchaseId], references: [id])
+  reason     String?
+  items      PurchaseReturnItem[]
+  total      Float
+  createdAt  DateTime             @default(now())
+}
+
+model PurchaseReturnItem {
+  id               String         @id @default(cuid())
+  purchaseReturnId String
+  purchaseReturn   PurchaseReturn @relation(fields: [purchaseReturnId], references: [id], onDelete: Cascade)
+  productId        String
+  quantity         Float
+  costPrice        Float
+}
+
+// ─── Attendance & Field Tracking ─────────────────────────────────────────────
+
+model Attendance {
+  id          String    @id @default(cuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date        String    // YYYY-MM-DD
+  clockIn     DateTime?
+  clockOut    DateTime?
+  clockInLat  Float?
+  clockInLng  Float?
+  clockOutLat Float?
+  clockOutLng Float?
+  status      String    @default("PRESENT") // PRESENT | ABSENT | LATE | HALF_DAY
+  notes       String?
+  gpsPings    GPSPing[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@unique([userId, date])
+  @@index([userId])
+  @@index([date])
+}
+
+model FieldVisit {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  clientId   String?
+  client     Client?  @relation(fields: [clientId], references: [id], onDelete: SetNull)
+  clientName String?
+  visitDate  DateTime @default(now())
+  lat        Float
+  lng        Float
+  address    String?
+  purpose    String?
+  notes      String?
+  photoUrl   String?
+  duration   Int?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([userId])
+  @@index([clientId])
+  @@index([visitDate])
+}
+
+model GPSPing {
+  id           String      @id @default(cuid())
+  userId       String
+  user         User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  attendanceId String?
+  attendance   Attendance? @relation(fields: [attendanceId], references: [id], onDelete: SetNull)
+  lat          Float
+  lng          Float
+  accuracy     Float?
+  recordedAt   DateTime    @default(now())
+
+  @@index([userId])
+  @@index([attendanceId])
+  @@index([recordedAt])
+}
+
+// ─── Banking Module ──────────────────────────────────────────────────────────
+
+model BankAccount {
+  id             String            @id @default(cuid())
+  name           String
+  bankName       String
+  accountNumber  String
+  currency       String            @default("AED")
+  openingBalance Float             @default(0)
+  currentBalance Float             @default(0)
+  isActive       Boolean           @default(true)
+  transactions   BankTransaction[]
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+}
+
+model BankTransaction {
+  id              String             @id @default(cuid())
+  bankAccountId   String
+  bankAccount     BankAccount        @relation(fields: [bankAccountId], references: [id], onDelete: Cascade)
+  date            DateTime
+  description     String
+  amount          Float
+  type            String             @default("credit")
+  reference       String?
+  status          String             @default("unmatched")
+  source          String             @default("import")
+  remainingAmount Float              @default(0)
+  transferId      String?
+  reconciliations Reconciliation[]
+  suggestions     MatchingSuggestion[]
+  createdAt       DateTime           @default(now())
+
+  @@index([bankAccountId])
+  @@index([date])
+  @@index([status])
+}
+
+model BankTransfer {
+  id                String   @id @default(cuid())
+  type              String   @default("incoming")
+  amount            Float
+  date              DateTime
+  description       String   @default("")
+  fromBankAccountId String?
+  toBankAccountId   String?
+  relatedEntityId   String?
+  createdAt         DateTime @default(now())
+}
+
+model Reconciliation {
+  id                String          @id @default(cuid())
+  bankTransactionId String
+  bankTransaction   BankTransaction @relation(fields: [bankTransactionId], references: [id], onDelete: Cascade)
+  entityType        String
+  entityId          String
+  matchedAmount     Float
+  score             Float           @default(0)
+  createdAt         DateTime        @default(now())
+
+  @@index([bankTransactionId])
+}
+
+model MatchingSuggestion {
+  id                String          @id @default(cuid())
+  bankTransactionId String
+  bankTransaction   BankTransaction @relation(fields: [bankTransactionId], references: [id], onDelete: Cascade)
+  entityType        String
+  entityId          String
+  score             Float           @default(0)
+  isSelected        Boolean         @default(false)
+  createdAt         DateTime        @default(now())
+
+  @@index([bankTransactionId])
+}

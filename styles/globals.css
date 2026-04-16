@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@media print {
+  @page {
+    size: A4;
+    margin: 20mm;
+  }
+}
+
+@media print {
+  /* اخفاء أي حاجة عامة */
+  nav,
+  aside,
+  header,
+  footer {
+    display: none !important;
+  }
+
+  /* خلي الصفحة تاخد العرض كله */
+  body * {
+    visibility: hidden;
+  }
+
+  .invoice-container,
+  .invoice-container * {
+    visibility: visible;
+  }
+
+  .invoice-container {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+}
