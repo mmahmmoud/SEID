@@ -8,20 +8,17 @@ datasource db {
 }
 
 model User {
-  id          String       @id @default(cuid())
-  name        String
-  email       String       @unique
-  password    String
-  role        String       @default("admin")
-  attendance  Attendance[]
-  fieldVisits FieldVisit[]
-  gpsPings    GPSPing[]
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      String   @default("admin")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Client {
-  id         String       @id @default(cuid())
+  id         String      @id @default(cuid())
   name       String
   email      String?
   phone      String?
@@ -29,9 +26,8 @@ model Client {
   licenseUrl String?
   invoices   Invoice[]
   quotations Quotation[]
-  fieldVisits FieldVisit[]
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime     @updatedAt
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
 }
 
 model Invoice {
@@ -49,7 +45,6 @@ model Invoice {
   dueDate      DateTime?
   materialCost Float              @default(0)
   linkedPurchaseIds String        @default("")
-  woocommerceOrderId String?      @unique
   createdAt    DateTime           @default(now())
   updatedAt    DateTime           @updatedAt
   inventoryLogs InventoryLog[]
@@ -249,69 +244,6 @@ model PurchaseReturnItem {
   productId        String
   quantity         Float
   costPrice        Float
-}
-
-// ─── Attendance & Field Tracking ─────────────────────────────────────────────
-
-model Attendance {
-  id          String    @id @default(cuid())
-  userId      String
-  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  date        String    // YYYY-MM-DD
-  clockIn     DateTime?
-  clockOut    DateTime?
-  clockInLat  Float?
-  clockInLng  Float?
-  clockOutLat Float?
-  clockOutLng Float?
-  status      String    @default("PRESENT") // PRESENT | ABSENT | LATE | HALF_DAY
-  notes       String?
-  gpsPings    GPSPing[]
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-
-  @@unique([userId, date])
-  @@index([userId])
-  @@index([date])
-}
-
-model FieldVisit {
-  id         String   @id @default(cuid())
-  userId     String
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  clientId   String?
-  client     Client?  @relation(fields: [clientId], references: [id], onDelete: SetNull)
-  clientName String?
-  visitDate  DateTime @default(now())
-  lat        Float
-  lng        Float
-  address    String?
-  purpose    String?
-  notes      String?
-  photoUrl   String?
-  duration   Int?
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-
-  @@index([userId])
-  @@index([clientId])
-  @@index([visitDate])
-}
-
-model GPSPing {
-  id           String      @id @default(cuid())
-  userId       String
-  user         User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  attendanceId String?
-  attendance   Attendance? @relation(fields: [attendanceId], references: [id], onDelete: SetNull)
-  lat          Float
-  lng          Float
-  accuracy     Float?
-  recordedAt   DateTime    @default(now())
-
-  @@index([userId])
-  @@index([attendanceId])
-  @@index([recordedAt])
 }
 
 // ─── Banking Module ──────────────────────────────────────────────────────────
